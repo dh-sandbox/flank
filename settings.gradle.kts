@@ -11,7 +11,6 @@ include(
     ":flank-scripts",
     ":integration_tests",
     "samples:gradle-export-api",
-    "test_projects:android",
     ":common",
     ":flank_wrapper",
     ":tool:apk",
