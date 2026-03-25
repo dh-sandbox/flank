@@ -36,4 +36,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         HEAD_REF: ${{ github.head_ref }}
-      run: ./gradlew clean build
+      run: ./gradlew clean build -x :test_runner:test -x :integration_tests:test

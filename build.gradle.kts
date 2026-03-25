@@ -1,7 +1,5 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
-// import org.jmailen.gradle.kotlinter.tasks.LintTask
-import java.nio.file.Paths
+import org.gradle.testing.jacoco.tasks.JacocoReport
 
 // Fix Exception in thread "main" java.lang.NoSuchMethodError: com.google.common.hash.Hashing.crc32c()Lcom/google/common/hash/HashFunction;
 // https://stackoverflow.com/a/45286710
@@ -36,10 +34,19 @@ nexusStaging {
 
 subprojects {
     // apply(plugin = Plugins.KTLINT_GRADLE_PLUGIN)
+    apply(plugin = "jacoco")
     afterEvaluate {
         if (tasks.findByName("test") != null) {
             tasks.test {
                 systemProperty("runningTests", true)
+                finalizedBy(tasks.named("jacocoTestReport"))
+            }
+            tasks.named<JacocoReport>("jacocoTestReport") {
+                reports {
+                    xml.required.set(true)
+                    html.required.set(false)
+                    csv.required.set(false)
+                }
             }
         }
     }
@@ -77,24 +84,3 @@ tasks.named("dependencyUpdates", DependencyUpdatesTask::class.java).configure {
     }
 }
 
-val resolveArtifacts by tasks.registering {
-    dependsOn(":flank-scripts:prepareJar")
-    group = "verification"
-    doLast {
-        val flankScriptsRunnerName = if (DefaultNativePlatform.getCurrentOperatingSystem().isWindows)
-            "flankScripts.bat" else "flankScripts"
-        val flankScriptsPath = Paths.get("flank-scripts", "bash", flankScriptsRunnerName).toString()
-        val rootFlankScriptsPath = rootDir.resolve(flankScriptsPath).absolutePath
-        try {
-            exec {
-                val cmd = listOf(rootFlankScriptsPath, "testArtifacts", "-p", rootDir.absolutePath, "resolve")
-                println(cmd.joinToString(" "))
-                commandLine(cmd)
-                workingDir = rootDir
-            }
-        } catch (e: Exception) {
-            // avoid breaking all gradle builds if github has rate limited us by not throwing the exception
-            e.printStackTrace()
-        }
-    }
-}

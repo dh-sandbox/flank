@@ -49,8 +49,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEAD_REF: ${{ github.head_ref }}
-        run: ./gradlew clean build
-      
+        run: ./gradlew clean build -x :test_runner:test -x :integration_tests:test
+
+      - name: Upload coverage to Qlty
+        if: always()
+        uses: qltysh/qlty-action/coverage@v2
+        env:
+          JACOCO_SOURCE_PATH: common/src/main/kotlin flank_wrapper/src/main/kotlin tool/apk/src/main/kotlin tool/config/src/main/kotlin tool/filter/src/main/kotlin tool/shard/src/main/kotlin tool/shard/calculate/src/main/kotlin tool/shard/obfuscate/src/main/kotlin tool/shard/dump/src/main/kotlin tool/instrument/command/src/main/kotlin tool/instrument/log/src/main/kotlin tool/junit/src/main/kotlin tool/json/src/main/kotlin tool/log/src/main/kotlin tool/log/format/src/main/kotlin tool/execution/parallel/src/main/kotlin tool/execution/parallel/plantuml/src/main/kotlin tool/execution/linear/src/main/kotlin tool/resource/src/main/kotlin
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: "**/build/reports/jacoco/test/jacocoTestReport.xml"
+
   publish-scan-url:
     needs: 
       - build

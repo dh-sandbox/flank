@@ -345,8 +345,6 @@ fun execAndGetStdout(vararg args: String): String {
 tasks.test {
     maxHeapSize = "3072m"
     minHeapSize = "512m"
-    dependsOn(":resolveArtifacts")
-
     // deletes 'results' directory which contains remains from unit tests
     // think about better solution
     doLast {
