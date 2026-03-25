@@ -1,7 +1,4 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
-// import org.jmailen.gradle.kotlinter.tasks.LintTask
-import java.nio.file.Paths
 
 // Fix Exception in thread "main" java.lang.NoSuchMethodError: com.google.common.hash.Hashing.crc32c()Lcom/google/common/hash/HashFunction;
 // https://stackoverflow.com/a/45286710
@@ -77,24 +74,3 @@ tasks.named("dependencyUpdates", DependencyUpdatesTask::class.java).configure {
     }
 }
 
-val resolveArtifacts by tasks.registering {
-    dependsOn(":flank-scripts:prepareJar")
-    group = "verification"
-    doLast {
-        val flankScriptsRunnerName = if (DefaultNativePlatform.getCurrentOperatingSystem().isWindows)
-            "flankScripts.bat" else "flankScripts"
-        val flankScriptsPath = Paths.get("flank-scripts", "bash", flankScriptsRunnerName).toString()
-        val rootFlankScriptsPath = rootDir.resolve(flankScriptsPath).absolutePath
-        try {
-            exec {
-                val cmd = listOf(rootFlankScriptsPath, "testArtifacts", "-p", rootDir.absolutePath, "resolve")
-                println(cmd.joinToString(" "))
-                commandLine(cmd)
-                workingDir = rootDir
-            }
-        } catch (e: Exception) {
-            // avoid breaking all gradle builds if github has rate limited us by not throwing the exception
-            e.printStackTrace()
-        }
-    }
-}
