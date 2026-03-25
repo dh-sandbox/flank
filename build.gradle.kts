@@ -1,4 +1,5 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import org.gradle.testing.jacoco.tasks.JacocoReport
 
 // Fix Exception in thread "main" java.lang.NoSuchMethodError: com.google.common.hash.Hashing.crc32c()Lcom/google/common/hash/HashFunction;
 // https://stackoverflow.com/a/45286710
@@ -33,10 +34,19 @@ nexusStaging {
 
 subprojects {
     // apply(plugin = Plugins.KTLINT_GRADLE_PLUGIN)
+    apply(plugin = "jacoco")
     afterEvaluate {
         if (tasks.findByName("test") != null) {
             tasks.test {
                 systemProperty("runningTests", true)
+                finalizedBy(tasks.named("jacocoTestReport"))
+            }
+            tasks.named<JacocoReport>("jacocoTestReport") {
+                reports {
+                    xml.required.set(true)
+                    html.required.set(false)
+                    csv.required.set(false)
+                }
             }
         }
     }

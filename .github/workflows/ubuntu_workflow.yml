@@ -50,7 +50,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEAD_REF: ${{ github.head_ref }}
         run: ./gradlew clean build -x :test_runner:test -x :integration_tests:test
-      
+
+      - name: Upload coverage to Qlty
+        if: always()
+        uses: qltysh/qlty-action/coverage@v2
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: "**/build/reports/jacoco/test/jacocoTestReport.xml"
+
   publish-scan-url:
     needs: 
       - build
