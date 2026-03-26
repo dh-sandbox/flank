@@ -1,3 +1,5 @@
+[![Code Coverage](https://qlty.sh/gh/dh-sandbox/projects/flank/coverage.svg)](https://qlty.sh/gh/dh-sandbox/projects/flank)
+
 # Flank
 
 Flank is a [massively parallel Android and iOS test runner](https://docs.google.com/presentation/d/1goan9cXpimSJsS3L60WjljnFA_seUyaWb2e-bezm084/edit#slide=id.p1) for [Firebase Test Lab](https://firebase.google.com/docs/test-lab/).
