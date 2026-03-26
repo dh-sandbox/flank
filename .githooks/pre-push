@@ -1,0 +1,7 @@
+#!/bin/sh
+echo "Running qlty check..."
+qlty check --fix --level=low
+if [ $? -ne 0 ]; then
+  echo "qlty check found issues that could not be auto-fixed. Please resolve them before pushing."
+  exit 1
+fi

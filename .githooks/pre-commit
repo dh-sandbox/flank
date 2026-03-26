@@ -1,0 +1,7 @@
+#!/bin/sh
+echo "Running qlty fmt..."
+qlty fmt
+if [ $? -ne 0 ]; then
+  echo "qlty fmt failed. Please fix formatting issues before committing."
+  exit 1
+fi
