@@ -18,16 +18,6 @@ qlty check --fix --level=low
 
 If issues remain that cannot be auto-fixed, resolve them manually before pushing.
 
-## Repository Setup
-
-After cloning, enable the shared git hooks:
-
-```sh
-git config core.hooksPath .githooks
-```
-
-This enforces `qlty fmt` on commit and `qlty check` on push.
-
 ## Kotlin Style
 
 ktlint is the primary Kotlin linter. Style rules are defined in the root `.editorconfig`:
