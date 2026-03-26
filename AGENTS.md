@@ -10,13 +10,13 @@ Before committing, ALWAYS run auto-formatting:
 qlty fmt
 ```
 
-Before finishing, ALWAYS run linting and fix any errors:
+Before pushing, ALWAYS run linting and fix any errors:
 
 ```sh
 qlty check --fix --level=low
 ```
 
-If issues remain that cannot be auto-fixed, resolve them manually before committing.
+If issues remain that cannot be auto-fixed, resolve them manually before pushing.
 
 ## Kotlin Style
 
