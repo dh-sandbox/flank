@@ -81,17 +81,6 @@ drivers = [
 name = "osv-scanner"
 
 [[plugin]]
-name = "radarlint-go"
-mode = "monitor"
-
-[[plugin]]
-name = "radarlint-java"
-mode = "comment"
-
-[[plugin]]
-name = "radarlint-js"
-
-[[plugin]]
 name = "radarlint-kotlin"
 mode = "monitor"
 
@@ -107,13 +96,6 @@ drivers = [
 
 [[plugin]]
 name = "shellcheck"
-
-[[plugin]]
-name = "trivy"
-drivers = [
-  "config",
-  "fs-vuln",
-]
 
 [[plugin]]
 name = "trufflehog"
